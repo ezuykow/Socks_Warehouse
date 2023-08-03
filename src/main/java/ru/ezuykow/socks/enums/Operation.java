@@ -5,5 +5,5 @@ package ru.ezuykow.socks.enums;
  */
 public enum Operation {
     //Кривые имена - из-за ограничений ТЗ
-    MORETHAN, LESSTHAN, EQUALS
+    MORETHAN, LESSTHAN, EQUAL
 }
