@@ -55,11 +55,11 @@ public class SocksService {
     {
         Integer result = 0;
         switch (targetOperation) {
-            case EQUAL -> result = socksRepository.countAllByColorAndCottonPartEquals(
+            case EQUAL -> result = socksRepository.socksCountByColorAndCottonPartEquals(
                     targetColor, targetCottonPart);
-            case MORETHAN -> result = socksRepository.countAllByColorAndCottonPartAfter(
+            case MORETHAN -> result = socksRepository.socksCountByColorAndCottonPartMoreThan(
                     targetColor, targetCottonPart);
-            case LESSTHAN -> result = socksRepository.countAllByColorAndCottonPartLessThan(
+            case LESSTHAN -> result = socksRepository.socksCountByColorAndCottonPartLessThan(
                     targetColor, targetCottonPart);
         }
         return result;
