@@ -3,10 +3,8 @@ package ru.ezuykow.socks.controllers;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ru.ezuykow.socks.dto.IncomeSocksDto;
 import ru.ezuykow.socks.services.SocksService;
 
 /**
@@ -20,6 +18,8 @@ public class SocksController {
 
     private final SocksService socksService;
 
+    //-----------------API START-----------------
+
     @GetMapping("")
     public ResponseEntity<String> socksCountByCriteria(
             @RequestParam("color") String color,
@@ -28,5 +28,12 @@ public class SocksController {
     {
             return socksService.findSocksCountByCriteria(color, operation, cottonPart);
     }
+
+    @PostMapping("/income")
+    public ResponseEntity<?> addSocks(@RequestBody IncomeSocksDto incomeSocksDto) {
+        return socksService.addSocks(incomeSocksDto);
+    }
+
+    //-----------------API END-----------------
 
 }

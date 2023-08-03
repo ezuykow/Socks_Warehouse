@@ -3,7 +3,6 @@ package ru.ezuykow.socks.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.ezuykow.socks.enums.Operation;
 
 /**
  * @author ezuykow
@@ -22,10 +21,15 @@ public class Socks {
     @Column(name = "color")
     private String color;
 
-    @Column(name = "operation")
-    @Enumerated(EnumType.STRING)
-    private Operation operation;
+    @Column(name = "quantity")
+    private Integer quantity;
 
     @Column(name = "cotton_part")
     private Integer cottonPart;
+
+    public Socks(String color, Integer quantity, Integer cottonPart) {
+        this.color = color;
+        this.quantity = quantity;
+        this.cottonPart = cottonPart;
+    }
 }
