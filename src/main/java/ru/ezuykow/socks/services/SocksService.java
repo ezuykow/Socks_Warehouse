@@ -48,6 +48,15 @@ public class SocksService {
         return ResponseEntity.ok().build();
     }
 
+    public ResponseEntity<?> removeSocks(IncomeSocksDto incomeSocksDto) {
+        if (IsIncomeRequestDataIncorrect(incomeSocksDto)) {
+            log.error("Incorrect income data!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        return removeSocksIfExist(incomeSocksDto);
+    }
+
     //-----------------API END-----------------
 
     private Integer findSocksCountByCriteriaAndOperation(
@@ -83,5 +92,29 @@ public class SocksService {
                 () -> socksRepository.save(
                         new Socks(incomeSocksDto.getColor().toUpperCase(),
                                 incomeSocksDto.getQuantity(), incomeSocksDto.getCottonPart())));
+    }
+
+    private ResponseEntity<?> removeSocksIfExist(IncomeSocksDto incomeSocksDto) {
+        Optional<Socks> socksOpt =
+                socksRepository.findByColorAndCottonPart(incomeSocksDto.getColor().toUpperCase(),
+                        incomeSocksDto.getCottonPart());
+
+        if (socksOpt.isPresent() && (socksOpt.get().getQuantity() >= incomeSocksDto.getQuantity())) {
+            Socks targetSocks = socksOpt.get();
+            targetSocks.setQuantity(targetSocks.getQuantity() - incomeSocksDto.getQuantity());
+            checkSocksQuantity(targetSocks);
+            return ResponseEntity.ok().build();
+        } else {
+            log.error("Outcome request error!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+    }
+
+    private void checkSocksQuantity(Socks targetSocks) {
+        if (targetSocks.getQuantity() == 0) {
+            socksRepository.delete(targetSocks);
+        } else {
+            socksRepository.save(targetSocks);
+        }
     }
 }

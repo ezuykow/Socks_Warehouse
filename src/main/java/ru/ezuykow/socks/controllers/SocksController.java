@@ -1,7 +1,6 @@
 package ru.ezuykow.socks.controllers;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.ezuykow.socks.dto.IncomeSocksDto;
@@ -12,7 +11,6 @@ import ru.ezuykow.socks.services.SocksService;
  */
 @RestController
 @RequestMapping("/api/socks")
-@Slf4j
 @RequiredArgsConstructor
 public class SocksController {
 
@@ -32,6 +30,11 @@ public class SocksController {
     @PostMapping("/income")
     public ResponseEntity<?> addSocks(@RequestBody IncomeSocksDto incomeSocksDto) {
         return socksService.addSocks(incomeSocksDto);
+    }
+
+    @PostMapping("/outcome")
+    public ResponseEntity<?> removeSocks(@RequestBody IncomeSocksDto incomeSocksDto) {
+        return socksService.removeSocks(incomeSocksDto);
     }
 
     //-----------------API END-----------------
