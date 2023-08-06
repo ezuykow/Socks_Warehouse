@@ -24,6 +24,14 @@ public class SocksService {
 
     //-----------------API START-----------------
 
+    /**
+     * Return ResponseEntity with String - count of founded socks
+     * @param paramColor searching color
+     * @param paramOperation cotton part comparison operation
+     * @param paramCottonPart target cotton part
+     * @return ResponseEntity with founded socks count or Bad_Request if input data is incorrect
+     * @author ezuykow
+     */
     public ResponseEntity<String> findSocksCountByCriteria(
             String paramColor, String paramOperation, int paramCottonPart)
     {
@@ -38,6 +46,12 @@ public class SocksService {
         }
     }
 
+    /**
+     * If data is correct - add target quantity of socks
+     * @param incomeSocksDto income data
+     * @return {@link HttpStatus#OK} if successfully added, or {@link HttpStatus#BAD_REQUEST} if income data is incorrect
+     * @author ezuykow
+     */
     public ResponseEntity<?> addSocks(SocksTransferDto incomeSocksDto) {
         if (IsTransferRequestDataIncorrect(incomeSocksDto)) {
             log.error("Incorrect income data!");
@@ -48,6 +62,13 @@ public class SocksService {
         return ResponseEntity.ok().build();
     }
 
+    /**
+     * Remove target quantity of socks if outcome data is correct
+     * @param outcomeSocksDto outcome data
+     * @return {@link HttpStatus#OK} if successfully removed, or {@link HttpStatus#BAD_REQUEST} if income data is incorrect
+     * or target socks is not existed
+     * @author ezuykow
+     */
     public ResponseEntity<?> removeSocks(SocksTransferDto outcomeSocksDto) {
         if (IsTransferRequestDataIncorrect(outcomeSocksDto)) {
             log.error("Incorrect income data!");
