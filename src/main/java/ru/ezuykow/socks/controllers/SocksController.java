@@ -3,7 +3,7 @@ package ru.ezuykow.socks.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.ezuykow.socks.dto.IncomeSocksDto;
+import ru.ezuykow.socks.dto.SocksTransferDto;
 import ru.ezuykow.socks.services.SocksService;
 
 /**
@@ -28,12 +28,12 @@ public class SocksController {
     }
 
     @PostMapping("/income")
-    public ResponseEntity<?> addSocks(@RequestBody IncomeSocksDto incomeSocksDto) {
+    public ResponseEntity<?> addSocks(@RequestBody SocksTransferDto incomeSocksDto) {
         return socksService.addSocks(incomeSocksDto);
     }
 
     @PostMapping("/outcome")
-    public ResponseEntity<?> removeSocks(@RequestBody IncomeSocksDto incomeSocksDto) {
+    public ResponseEntity<?> removeSocks(@RequestBody SocksTransferDto incomeSocksDto) {
         return socksService.removeSocks(incomeSocksDto);
     }
 

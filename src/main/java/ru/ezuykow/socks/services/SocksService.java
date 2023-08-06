@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import ru.ezuykow.socks.dto.IncomeSocksDto;
+import ru.ezuykow.socks.dto.SocksTransferDto;
 import ru.ezuykow.socks.entities.Socks;
 import ru.ezuykow.socks.enums.Operation;
 import ru.ezuykow.socks.repositories.SocksRepository;
@@ -38,8 +38,8 @@ public class SocksService {
         }
     }
 
-    public ResponseEntity<?> addSocks(IncomeSocksDto incomeSocksDto) {
-        if (IsIncomeRequestDataIncorrect(incomeSocksDto)) {
+    public ResponseEntity<?> addSocks(SocksTransferDto incomeSocksDto) {
+        if (IsTransferRequestDataIncorrect(incomeSocksDto)) {
             log.error("Incorrect income data!");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -48,13 +48,13 @@ public class SocksService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> removeSocks(IncomeSocksDto incomeSocksDto) {
-        if (IsIncomeRequestDataIncorrect(incomeSocksDto)) {
+    public ResponseEntity<?> removeSocks(SocksTransferDto outcomeSocksDto) {
+        if (IsTransferRequestDataIncorrect(outcomeSocksDto)) {
             log.error("Incorrect income data!");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        return removeSocksIfExist(incomeSocksDto);
+        return removeSocksIfExist(outcomeSocksDto);
     }
 
     //-----------------API END-----------------
@@ -74,14 +74,14 @@ public class SocksService {
         return result;
     }
 
-    private boolean IsIncomeRequestDataIncorrect(IncomeSocksDto incomeSocksDto){
-        return incomeSocksDto.getColor().isBlank()
-                || incomeSocksDto.getCottonPart() < 0
-                || incomeSocksDto.getCottonPart() > 100
-                || incomeSocksDto.getQuantity() < 1;
+    private boolean IsTransferRequestDataIncorrect(SocksTransferDto socksTransferDto){
+        return socksTransferDto.getColor().isBlank()
+                || socksTransferDto.getCottonPart() < 0
+                || socksTransferDto.getCottonPart() > 100
+                || socksTransferDto.getQuantity() < 1;
     }
 
-    private void createNewPositionOrIncreaseExisted(IncomeSocksDto incomeSocksDto) {
+    private void createNewPositionOrIncreaseExisted(SocksTransferDto incomeSocksDto) {
         Optional<Socks> socksOpt =
                 socksRepository.findByColorAndCottonPart(incomeSocksDto.getColor().toUpperCase(),
                         incomeSocksDto.getCottonPart());
@@ -94,14 +94,14 @@ public class SocksService {
                                 incomeSocksDto.getQuantity(), incomeSocksDto.getCottonPart())));
     }
 
-    private ResponseEntity<?> removeSocksIfExist(IncomeSocksDto incomeSocksDto) {
+    private ResponseEntity<?> removeSocksIfExist(SocksTransferDto outcomeSocksDto) {
         Optional<Socks> socksOpt =
-                socksRepository.findByColorAndCottonPart(incomeSocksDto.getColor().toUpperCase(),
-                        incomeSocksDto.getCottonPart());
+                socksRepository.findByColorAndCottonPart(outcomeSocksDto.getColor().toUpperCase(),
+                        outcomeSocksDto.getCottonPart());
 
-        if (socksOpt.isPresent() && (socksOpt.get().getQuantity() >= incomeSocksDto.getQuantity())) {
+        if (socksOpt.isPresent() && (socksOpt.get().getQuantity() >= outcomeSocksDto.getQuantity())) {
             Socks targetSocks = socksOpt.get();
-            targetSocks.setQuantity(targetSocks.getQuantity() - incomeSocksDto.getQuantity());
+            targetSocks.setQuantity(targetSocks.getQuantity() - outcomeSocksDto.getQuantity());
             checkSocksQuantity(targetSocks);
             return ResponseEntity.ok().build();
         } else {

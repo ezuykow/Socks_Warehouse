@@ -6,7 +6,7 @@ import lombok.Data;
  * @author ezuykow
  */
 @Data
-public class IncomeSocksDto {
+public class SocksTransferDto {
 
     private String color;
     private int cottonPart;
